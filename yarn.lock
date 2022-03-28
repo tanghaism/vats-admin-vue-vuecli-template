@@ -6782,7 +6782,38 @@ vue-types@^3.0.0:
   dependencies:
     is-plain-object "3.0.1"
 
-vue@^3.2.13:
+vue-watermarker@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/vue-watermarker/-/vue-watermarker-0.0.2.tgz#fdf8e2252a6e17c3aaa1ab72ad79dcdfb9bfc948"
+  integrity sha512-jFPXPXMod4D+vNPv2Pj1f0QbWwo6MbcgpYOTwzI8w7hcD3E3Vno4ShNIFOZLxSOvrXDUsKvjASzsL6mCozoxlg==
+  dependencies:
+    vue "^3.2.6"
+
+vue-watermarker@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/vue-watermarker/-/vue-watermarker-0.0.3.tgz#39efa33ac6228c6984300e5e796645873a2f716f"
+  integrity sha512-XglFGPi75gQUA9gw7dN1/YLyFi+LsKcAdxs9mncEx6D2Z7ZTj+WA/JcHlkXtNWcHqkvpxIj9tvO3Z7bP0bYMMw==
+  dependencies:
+    vue "^3.2.6"
+    vue-watermarker "^0.0.2"
+
+vue-watermarker@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/vue-watermarker/-/vue-watermarker-0.0.4.tgz#a1ccc88b4d7bdf48f395d95107444fe398d24352"
+  integrity sha512-UcP626XBkuUOkKQ6wP32Hz5q1EsMGebAQ3BOscXKfAl4Ti02y5o10odkTNxdDCvQe9RlQ8+jeBTjlzlA+jfmcg==
+  dependencies:
+    vue "^3.2.6"
+    vue-watermarker "^0.0.3"
+
+vue-watermarker@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/vue-watermarker/-/vue-watermarker-0.0.5.tgz#639540fe3dbc6b926aae1ff2bae42545176b4500"
+  integrity sha512-YNOWg5f07ec6BKSvd488AMrAc42l2gs9G+V92npG7EcXGrOvKgelNNFpSOtEa9i7aE1gw1ycI9mbKyGx7eoOKg==
+  dependencies:
+    vue "^3.2.6"
+    vue-watermarker "^0.0.4"
+
+vue@^3.2.13, vue@^3.2.6:
   version "3.2.31"
   resolved "https://registry.yarnpkg.com/vue/-/vue-3.2.31.tgz#e0c49924335e9f188352816788a4cca10f817ce6"
   integrity sha512-odT3W2tcffTiQCy57nOT93INw1auq5lYLLYtWpPYQQYQOOdHiqFct9Xhna6GJ+pJQaF67yZABraH47oywkJgFw==

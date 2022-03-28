@@ -18,9 +18,13 @@ const getDependVersion = packageName => {
   }
 };
 
-const getDNSLinks = () => {
+const getDNSLinks = cdnArray => {
   const rels = ['preconnect', 'dns-prefetch'];
-  const hrefs = ['https://cdnjs.cloudflare.com/', 'https://unpkg.com/'];
+
+  const hrefs = cdnArray.map(cdn => {
+    const urlObj = new URL(cdn);
+    return urlObj.origin;
+  });
 
   return rels.reduce(
     (result, rel) => result.concat(hrefs.map(href => `<link href="${href}" rel="${rel}">`)),
@@ -34,42 +38,48 @@ const externals = {
   pinia: 'Pinia',
   axios: 'axios',
   dayjs: 'dayjs',
+  'vue-i18n': 'VueI18n',
   './dayjs': 'dayjs',
   'ant-design-vue': 'antd',
-  'ant-design-vue/dist/antd.css': 'antd',
+  'ant-design-vue/dist/antd.min.css': 'antd',
 };
 
 const externalsCDN = () => {
+  const jsCdn = [
+    `https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/vue/${getDependVersion(
+      'vue',
+    )}/vue.global.prod.min.js`,
+    `https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-y/vue-router/${getDependVersion(
+      'vue-router',
+    )}/vue-router.global.prod.min.js`,
+    `https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/vue-i18n/${getDependVersion(
+      'vue-i18n',
+    )}/vue-i18n.global.prod.min.js`,
+    `https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-y/pinia/${getDependVersion(
+      'pinia',
+    )}/pinia.iife.prod.min.js`,
+    `https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/vue-i18n/${getDependVersion(
+      'vue-i18n',
+    )}/vue-i18n.global.prod.min.js`,
+    `https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/axios/${getDependVersion(
+      'axios',
+    )}/axios.min.js`,
+    `https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/dayjs/${getDependVersion(
+      'dayjs',
+    )}/dayjs.min.js`,
+    `https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-y/ant-design-vue/${getDependVersion(
+      'ant-design-vue',
+    )}/antd.min.js`,
+  ];
+
   return {
-    links: [...getDNSLinks()],
+    links: getDNSLinks(jsCdn),
     css: [
       `https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-y/ant-design-vue/${getDependVersion(
         'ant-design-vue',
       )}/antd.min.css`,
     ],
-    js: [
-      `https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/vue/${getDependVersion(
-        'vue',
-      )}/vue.global.prod.min.js`,
-      `https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-y/vue-router/${getDependVersion(
-        'vue-router',
-      )}/vue-router.global.prod.min.js`,
-      `https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-y/pinia/${getDependVersion(
-        'pinia',
-      )}/pinia.iife.prod.min.js`,
-      `https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/vue-i18n/${getDependVersion(
-        'vue-i18n',
-      )}/vue-i18n.global.prod.min.js`,
-      `https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/axios/${getDependVersion(
-        'axios',
-      )}/axios.min.js`,
-      `https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/dayjs/${getDependVersion(
-        'dayjs',
-      )}/dayjs.min.js`,
-      `https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-y/ant-design-vue/${getDependVersion(
-        'ant-design-vue',
-      )}/antd.min.js`,
-    ],
+    js: jsCdn,
   };
 };
 
@@ -78,6 +88,13 @@ module.exports = defineConfig({
   transpileDependencies: true,
   productionSourceMap: false,
   filenameHashing: IS_PROD,
+  css: {
+    loaderOptions: {
+      scss: {
+        additionalData: `@import "@/assets/scss/variables.scss";`,
+      },
+    },
+  },
   configureWebpack: {
     resolve: {
       alias: {

@@ -5,7 +5,7 @@ import { Local } from '@/utils/storage';
 import { Vats } from '@/types/vats.d';
 
 // 项目语言
-type ILangMapKey = 'zh' | 'ja' | 'en';
+export type ILangMapKey = 'zh' | 'ja' | 'en';
 // 各第三方依赖国际化语言
 type ILangDependence = {
   antd: Vats.IAntdLang;
@@ -55,7 +55,7 @@ export async function loadMessage(lang: ILangMapKey) {
   if (lang !== 'en') {
     arr.push(
       import(
-        /* webpackInclude: /(zh-cn|ja)\.js$/ */ /* webpackChunkName: "locale-[request]" */ `moment/locale/${langMap[lang].dayjs}`
+        /* webpackInclude: /(zh-cn|ja)\.js$/ */ /* webpackChunkName: "locale-[request]" */ `dayjs/locale/${langMap[lang].dayjs}`
       ),
     );
   }
