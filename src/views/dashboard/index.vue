@@ -1,16 +1,18 @@
 <template>
-  <a-select :value="rootSetting.lang" placeholder="请选择语言" @change="rootSetting.setLang">
-    <a-select-option
-      v-for="item in LANG_OPTION"
-      :key="item.lang"
-      :value="item.lang"
-      :disabled="item.disabled"
-    >
-      <span role="img" aria-label="China">{{ item.flag }}</span>
-      &nbsp;&nbsp;{{ item.name }}
-    </a-select-option>
-  </a-select>
-  {{ $t('common.test') }}
+  <div>
+    <a-select :value="rootSetting.lang" placeholder="请选择语言" @change="rootSetting.setLang">
+      <a-select-option
+        v-for="item in LANG_OPTION"
+        :key="item.lang"
+        :value="item.lang"
+        :disabled="item.disabled"
+      >
+        <span role="img" aria-label="China">{{ item.flag }}</span>
+        &nbsp;&nbsp;{{ item.name }}
+      </a-select-option>
+    </a-select>
+    {{ $t('common.test') }}
+  </div>
 </template>
 
 <script lang="ts">

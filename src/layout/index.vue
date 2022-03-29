@@ -1,5 +1,12 @@
 <template>
-  <VatsLayout />
+  <VatsLayout
+    :menu="permissionStore.menu"
+    :system="{
+      logo: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
+      title: 'Vats',
+      subTitle: 'This is Vats',
+    }"
+  />
 </template>
 
 <script lang="ts">
@@ -10,6 +17,10 @@ export default defineComponent({
 });
 </script>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { usePermission } from '@/store/permission';
+
+const permissionStore = usePermission();
+</script>
 
 <style lang="scss" scoped></style>

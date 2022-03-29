@@ -4,9 +4,9 @@
     :class="[collapsed ? 'vats-system-close' : 'vats-system-open']"
     class="vats-system vats-flex"
   >
-    <img :src="system.logo" alt="" width="32px" height="32px" v-if="system.logo" />
+    <img :src="system.logo" alt="" width="32" height="32" v-if="system.logo" />
     <div
-      class="vats-system-info vats-flex vats-flex-column vats-ellipsis"
+      class="vats-system-info vats-flex vats-flex-1 vats-flex-column vats-ellipsis"
       v-if="system.title || system.subTitle"
       v-show="!collapsed"
     >
@@ -18,7 +18,7 @@
       >
         {{ system.title }}
       </a-typography-text>
-      <a-typography-text v-if="system.subTitle" type="secondary">
+      <a-typography-text class="vats-system-sub-title" v-if="system.subTitle">
         {{ system.subTitle }}
       </a-typography-text>
     </div>
@@ -27,6 +27,7 @@
     <a-menu
       class="vats-menu-wrap"
       mode="inline"
+      theme="dark"
       :inlineCollapsed="false"
       v-model:openKeys="menuSelected.openMenus"
       v-model:selectedKeys="menuSelected.selectedMenus"
@@ -73,9 +74,10 @@ export default defineComponent({
 </script>
 
 <script lang="ts" setup>
-import { defineProps, withDefaults, toRefs, reactive } from 'vue';
+import { defineProps, withDefaults, toRefs, reactive, toRaw, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { ISystem, IMenu, IMenuSelected } from './types.d';
+import { IBreadcrumb } from '@/types/antd.d';
 
 interface IProps {
   system?: ISystem;
@@ -97,6 +99,32 @@ const menuSelected = reactive<IMenuSelected>({
   selectedMenus: [],
 });
 
+const setMenuSelected = () => {
+  const matched: IBreadcrumb[] = [...toRaw(route.meta.breadcrumb || [])];
+  if (!collapsed.value) {
+    menuSelected.openMenus = matched.map((_matched: IBreadcrumb) => _matched.name);
+  }
+  menuSelected.selectedMenus = [(route.meta.selected || route.name) as string];
+};
+
+onMounted(() => {
+  setMenuSelected();
+});
+
+watch(() => route.name, setMenuSelected);
+
+watch(
+  () => collapsed.value,
+  newCollapsed => {
+    if (!newCollapsed) {
+      const matched: IBreadcrumb[] = [...toRaw(route.meta.breadcrumb || [])];
+      menuSelected.openMenus = matched.map((_matched: IBreadcrumb) => _matched.name) as string[];
+    } else {
+      menuSelected.openMenus = [];
+    }
+  },
+);
+
 const jumpTo = (routeName: string) => {
   route.name !== routeName && router.push({ name: routeName });
 };
@@ -104,25 +132,28 @@ const jumpTo = (routeName: string) => {
 
 <style lang="scss">
 .vats-system {
-  padding: 0 6px;
   width: 100%;
   overflow: hidden;
   &-info {
-    margin-left: 8px;
+    margin-left: 10px;
     animation: vats-title-animation 0.2s;
   }
-  &-title {
+  &-title.ant-typography {
     color: #ffffff;
     font-size: 14px;
     &-large {
       font-size: 16px;
     }
   }
+  &-sub-title.ant-typography {
+    color: #888;
+    font-size: 12px;
+  }
   &-close {
-    padding: 0 24px;
+    padding: 12px 24px 6px;
   }
   &-open {
-    padding: 0 16px;
+    padding: 12px 16px 6px;
   }
 }
 

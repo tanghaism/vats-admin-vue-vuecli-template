@@ -6,32 +6,32 @@ import {
   RouteLocationRaw,
 } from 'vue-router';
 import { usePermission, IGroup } from '@/store/permission';
+import { Modal } from 'ant-design-vue';
 import Layout from '@/layout/index.vue';
 import test from './routes/test';
 
+// 判断当前用户是否第一次进入layout
+let isFirstEnter = true;
+
 // 设置Layout组件的重定向地址
-function setIndexRedirect() {
-  // 判断当前用户是否第一次进入layout
-  let isFirstEnter = true;
-  return (
-    toRoute: RouteLocationNormalized,
-    next: (route?: RouteLocationRaw) => void,
-    menu: IGroup[],
-  ) => {
-    return next();
-    if (toRoute.name !== 'Index') {
-      isFirstEnter && toRoute.name !== '404'
-        ? next({ path: toRoute.path, force: isFirstEnter, replace: true })
-        : next();
-      isFirstEnter = false;
+function setIndexRedirect(
+  toRoute: RouteLocationNormalized,
+  next: (route?: RouteLocationRaw) => void,
+  menu: IGroup[],
+) {
+  Modal.destroyAll();
+  if (toRoute.name !== 'Index') {
+    isFirstEnter && toRoute.name !== '404'
+      ? next({ path: toRoute.path, force: isFirstEnter, replace: true })
+      : next();
+    isFirstEnter = false;
+  } else {
+    if (menu.length > 0) {
+      menu[0]?.children?.length ? next(menu[0].children[0].path) : next(menu[0].path);
     } else {
-      if (menu.length > 0) {
-        menu[0].children?.length > 0 ? next(menu[0].children[0].path) : next(menu[0].path);
-      } else {
-        next();
-      }
+      next();
     }
-  };
+  }
 }
 
 // 用来匹配菜单和路由的对象
@@ -53,9 +53,9 @@ const router = createRouter({
         title: 'Vats',
         icon: '',
       },
-      beforeEnter(to, from, next) {
+      async beforeEnter(to, from, next) {
         const permissionStore = usePermission();
-        setIndexRedirect()(to, next, permissionStore.menu);
+        setIndexRedirect(to, next, permissionStore.menu);
       },
       children: [...children],
     },
@@ -66,6 +66,19 @@ const router = createRouter({
       meta: { title: '页面未找到', icon: '' },
     },
   ],
+});
+
+router.beforeEach(async (to, from, next) => {
+  const permissionStore = usePermission();
+  if (!permissionStore.menu.length) {
+    await permissionStore.getPermission();
+    return setIndexRedirect(to, next, permissionStore.menu);
+  }
+  if (to.name === 'Index') {
+    return setIndexRedirect(to, next, permissionStore.menu);
+  }
+  Modal.destroyAll();
+  return next();
 });
 
 export default router;
