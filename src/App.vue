@@ -6,11 +6,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, getCurrentInstance } from 'vue';
 import { useRoot } from '@/store/root';
 import VueWaterMarker from 'vue-watermarker';
 import { useI18n } from 'vue-i18n';
 import { ILangMapKey, loadMessage } from '@/utils/i18n';
+
+const app = getCurrentInstance();
 
 const rootStore = useRoot();
 const { setLocaleMessage, locale } = useI18n();
@@ -21,6 +23,7 @@ const setLocale = async (lang: ILangMapKey) => {
   locale.value = lang;
   localeMessage.value = antdMessage.default;
   setLocaleMessage(lang, messages.default);
+  console.log(app?.appContext.config.globalProperties.$pinia.state.value.root.lang);
 };
 
 setLocale(rootStore.lang);

@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 import Antd, { message, Modal } from 'ant-design-vue';
 import { createPinia } from 'pinia';
+import Vats from '@/components/vats';
 import App from './App.vue';
 import { initI18n } from '@/utils/i18n';
 import './registerServiceWorker';
@@ -13,7 +14,7 @@ window.$modal = Modal;
 
 export const i18n = initI18n();
 
-const app = createApp(App).use(router).use(createPinia()).use(Antd).use(i18n);
+const app = createApp(App).use(router).use(createPinia()).use(Antd).use(i18n).use(Vats);
 
 window.$message = message;
 window.$modal = Modal;
