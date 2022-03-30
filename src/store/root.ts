@@ -5,7 +5,6 @@ import { ILangMapKey } from '@/utils/i18n';
 
 type IRootState = {
   lang: ILangMapKey;
-  localeMessage: unknown;
   userInfo: null | Record<string, unknown>;
 };
 
@@ -17,7 +16,6 @@ export const useRoot = defineStore<string, IRootState, StoreGetters<unknown>, IR
   state() {
     return {
       lang: Local.get(LANG) ?? 'zh',
-      localeMessage: null,
       userInfo: null,
     };
   },

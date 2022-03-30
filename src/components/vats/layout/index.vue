@@ -7,7 +7,8 @@
       :style="{ width: siderWidth }"
     />
     <a-layout-sider
-      :collapsed-width="siderWidth"
+      v-show="!layoutState.isMobile"
+      v-model:collapsed="layoutState.collapsed"
       collapsible
       :trigger="null"
       class="vats-layout-sider vats-h-full vats-flex vats-flex-column"
@@ -36,7 +37,13 @@
     </a-drawer>
     <!--  内容布局  -->
     <a-layout>
-      <a-layout-header class="vats-layout-header vats-flex" />
+      <a-layout-header class="vats-layout-header vats-flex">
+        <VatsHeader
+          :collapsed="layoutState.collapsed"
+          :userInfo="userInfo"
+          @handleMenuToggle="layoutState.collapsed = !layoutState.collapsed"
+        />
+      </a-layout-header>
       <a-layout-content>
         <router-view v-slot="{ Component }">
           <transition name="slid-up" mode="out-in">
@@ -61,30 +68,59 @@ export default defineComponent({
 </script>
 
 <script lang="ts" setup>
-import { defineProps, reactive, toRefs, withDefaults, computed } from 'vue';
+import { defineProps, reactive, toRefs, withDefaults, onBeforeUnmount, computed } from 'vue';
 import VatsSider from './sider.vue';
-import { ISystem, IMenu, ILayoutSate } from './types.d';
+import VatsHeader from './header.vue';
+import { isMobile } from '../utils/isMobile';
+import { debounced } from '../utils/debounced';
+import { ISystem, IMenu, ILayoutSate, IUserInfo } from './types.d';
 
 interface IProps {
   system?: ISystem;
   menu: IMenu[];
+  userInfo: IUserInfo;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
   menu: () => [],
 });
 
-const { system, menu } = toRefs(props);
+const { system, menu, userInfo } = toRefs(props);
+
+const mobile = isMobile();
 
 const layoutState = reactive<ILayoutSate>({
-  collapsed: false,
-  isMobile: false,
+  collapsed: mobile,
+  isMobile: mobile,
   transition: true,
 });
 
 const siderWidth = computed(() => (layoutState.collapsed ? '80px' : '200px'));
 
 const drawerSiderVisible = computed(() => !layoutState.collapsed && layoutState.isMobile);
+
+// 监听页面resize事件
+const onResize = () =>
+  debounced(() => {
+    if (layoutState.collapsed && window?.innerWidth > 1200) {
+      layoutState.collapsed = false;
+    } else if (!layoutState.collapsed && window?.innerWidth <= 1200) {
+      layoutState.collapsed = true;
+    }
+    if (layoutState.isMobile && window?.innerWidth > 750) {
+      layoutState.isMobile = false;
+    } else if (!layoutState.isMobile && window?.innerWidth <= 750) {
+      layoutState.isMobile = true;
+    }
+  }, 250)();
+// 初始化
+onResize();
+// 开始监听窗口尺寸变化
+window?.addEventListener('resize', onResize, false);
+// 移除监听窗口尺寸变化
+onBeforeUnmount(() => {
+  window?.removeEventListener('resize', onResize, false);
+});
 
 const cachedPage = [];
 </script>
@@ -101,6 +137,7 @@ const cachedPage = [];
   z-index: 10;
 }
 .vats-layout-header.ant-layout-header {
+  padding: 0 12px;
   height: 48px;
   background: #ffffff;
 }

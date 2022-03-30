@@ -6,6 +6,10 @@ import vLoading from './directive/v-loading';
 
 import VatsLoading from './loading/index.vue';
 import VatsLayout from './layout/index.vue';
+import VatsProvider from './provider/index.vue';
+
+import { isMobile } from './utils/isMobile';
+import { debounced } from './utils/debounced';
 
 export default {
   install(app: App) {
@@ -15,10 +19,10 @@ export default {
     });
 
     // 组件挂载
-    [VatsLoading, VatsLayout].forEach(component => {
+    [VatsLoading, VatsProvider, VatsLayout].forEach(component => {
       app.component(component.name, component);
     });
   },
 };
 
-export { vPermission, vLoading, VatsLoading };
+export { vPermission, vLoading, VatsLoading, VatsProvider, isMobile, debounced };

@@ -31,3 +31,9 @@ export interface IMenuSelected {
   openMenus: string[];
   selectedMenus: string[];
 }
+
+// 用户信息展示
+export interface IUserInfo {
+  nickname: string;
+  avatar: string;
+}

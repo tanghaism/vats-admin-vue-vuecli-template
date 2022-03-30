@@ -6,6 +6,10 @@
       title: 'Vats',
       subTitle: 'This is Vats',
     }"
+    :userInfo="{
+      nickname: 'Vats User',
+      avatar: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
+    }"
   />
 </template>
 
