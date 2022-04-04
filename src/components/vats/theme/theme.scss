@@ -21,9 +21,15 @@
   transition: width 0.2s;
 }
 
+.vats-block {
+  display: block;
+}
+
 .iconfont.anticon {
   vertical-align: inherit;
   &::before {
     display: inline-block !important;
   }
 }
+
+@import "dark";

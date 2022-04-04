@@ -6,6 +6,7 @@ import App from './App.vue';
 import { initI18n } from '@/utils/i18n';
 import './registerServiceWorker';
 import router from './router';
+
 import 'ant-design-vue/dist/antd.min.css';
 import '@/assets/scss/index.scss';
 

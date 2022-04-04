@@ -24,6 +24,7 @@ export interface ILayoutSate {
   collapsed: boolean;
   isMobile: boolean;
   transition: boolean;
+  showSetting: boolean;
 }
 
 // 选中的menu

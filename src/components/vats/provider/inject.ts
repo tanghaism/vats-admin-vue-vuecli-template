@@ -10,6 +10,7 @@ export interface ILocalSetting {
 export interface IProvider extends ILocalSetting {
   refresh: boolean; // 刷新页面
   cached: string[]; // keep-alive缓存的页面组件数组
+  [props: string]: unknown;
 }
 
 const HTML = document.querySelector('html') as HTMLHtmlElement;
@@ -76,4 +77,5 @@ export async function resetCached(
     provider.cached = [...provider.cached, route.name as string];
   }
   provider.refresh = true;
+  return true;
 }

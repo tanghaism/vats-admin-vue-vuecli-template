@@ -42,22 +42,52 @@
           :collapsed="layoutState.collapsed"
           :userInfo="userInfo"
           @handleMenuToggle="layoutState.collapsed = !layoutState.collapsed"
+          @handleShowSetting="layoutState.showSetting = true"
         />
       </a-layout-header>
+      <VatsTab
+        v-if="settingProvider.tabVisible"
+        :class="[
+          settingProvider.tabFixed ? 'vats-tab-fixed' : '',
+          !layoutState.isMobile && layoutState.transition ? 'vats-layout-transition' : '',
+        ]"
+        :style="{
+          width:
+            settingProvider.tabFixed && !layoutState.isMobile
+              ? `calc(100% - ${siderWidth})`
+              : `100%`,
+        }"
+        @refreshCache="handleRefreshCache"
+      />
+      <div style="height: 42px" v-if="settingProvider.tabVisible && settingProvider.tabFixed"></div>
       <a-layout-content>
         <router-view v-slot="{ Component }">
           <transition name="slid-up" mode="out-in">
-            <keep-alive :include="cachedPage">
-              <component :is="Component" :key="(Component || {}).name" />
+            <keep-alive :include="settingProvider.cached">
+              <component
+                :is="Component"
+                :key="(Component || {}).name"
+                v-if="settingProvider.refresh"
+              />
             </keep-alive>
           </transition>
         </router-view>
       </a-layout-content>
       <a-layout-footer style="text-align: center">
-        Ant Design ©2018 Created by Ant UED
+        &copy; {{ copyRightYear }} Vats
       </a-layout-footer>
     </a-layout>
   </a-layout>
+  <VatsSetting
+    v-model:visible="layoutState.showSetting"
+    :userInfo="userInfo"
+    :onLogout="onLogout"
+    :onEditPwd="onEditPwd"
+  >
+    <template #setting>
+      <slot name="setting"></slot>
+    </template>
+  </VatsSetting>
 </template>
 
 <script lang="ts">
@@ -68,24 +98,43 @@ export default defineComponent({
 </script>
 
 <script lang="ts" setup>
-import { defineProps, reactive, toRefs, withDefaults, onBeforeUnmount, computed } from 'vue';
+import {
+  defineProps,
+  reactive,
+  toRefs,
+  withDefaults,
+  onBeforeUnmount,
+  computed,
+  inject,
+} from 'vue';
+import { useRoute } from 'vue-router';
 import VatsSider from './sider.vue';
 import VatsHeader from './header.vue';
+import VatsSetting from './setting.vue';
+import VatsTab from './tab.vue';
 import { isMobile } from '../utils/isMobile';
 import { debounced } from '../utils/debounced';
 import { ISystem, IMenu, ILayoutSate, IUserInfo } from './types.d';
+import { vatsProvider, resetCached } from '@/components/vats/provider/inject';
 
 interface IProps {
   system?: ISystem;
   menu: IMenu[];
   userInfo: IUserInfo;
+  startYear: string | number;
+  onLogout?: () => Promise<unknown>;
+  onEditPwd?: () => Promise<unknown>;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
   menu: () => [],
 });
 
-const { system, menu, userInfo } = toRefs(props);
+const route = useRoute();
+
+const { system, menu, userInfo, onLogout, onEditPwd } = toRefs(props);
+
+const settingProvider = inject('vatsProvider', vatsProvider);
 
 const mobile = isMobile();
 
@@ -93,11 +142,25 @@ const layoutState = reactive<ILayoutSate>({
   collapsed: mobile,
   isMobile: mobile,
   transition: true,
+  showSetting: false,
 });
 
 const siderWidth = computed(() => (layoutState.collapsed ? '80px' : '200px'));
 
 const drawerSiderVisible = computed(() => !layoutState.collapsed && layoutState.isMobile);
+
+const copyRightYear = computed(() => {
+  let year = new Date().getFullYear();
+  if (!props.startYear) return '';
+  if (props.startYear.toString() === year.toString()) {
+    return props.startYear;
+  }
+  return `${props.startYear}-${year}`;
+});
+
+const handleRefreshCache = async (refresh = false) => {
+  return resetCached(settingProvider, route, refresh);
+};
 
 // 监听页面resize事件
 const onResize = () =>
@@ -121,8 +184,6 @@ window?.addEventListener('resize', onResize, false);
 onBeforeUnmount(() => {
   window?.removeEventListener('resize', onResize, false);
 });
-
-const cachedPage = [];
 </script>
 
 <style lang="scss">
@@ -138,7 +199,20 @@ const cachedPage = [];
 }
 .vats-layout-header.ant-layout-header {
   padding: 0 12px;
-  height: 48px;
+  height: 44px;
   background: #ffffff;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+[vats-mode='dark'] .vats-layout-header.ant-layout-header {
+  background: #141414;
+  border-bottom: 1px solid #303030;
+}
+
+.vats-tab-fixed {
+  position: fixed;
+  right: 0;
+  top: 44px;
+  z-index: 10;
 }
 </style>

@@ -7,6 +7,8 @@ import vLoading from './directive/v-loading';
 import VatsLoading from './loading/index.vue';
 import VatsLayout from './layout/index.vue';
 import VatsProvider from './provider/index.vue';
+import VatsSelect from './select/index.vue';
+import VatsPage from './page/index.vue';
 
 import { isMobile } from './utils/isMobile';
 import { debounced } from './utils/debounced';
@@ -19,10 +21,19 @@ export default {
     });
 
     // 组件挂载
-    [VatsLoading, VatsProvider, VatsLayout].forEach(component => {
+    [VatsLoading, VatsProvider, VatsLayout, VatsSelect, VatsPage].forEach(component => {
       app.component(component.name, component);
     });
   },
 };
 
-export { vPermission, vLoading, VatsLoading, VatsProvider, isMobile, debounced };
+export {
+  vPermission,
+  vLoading,
+  VatsLoading,
+  VatsProvider,
+  VatsPage,
+  VatsSelect,
+  isMobile,
+  debounced,
+};

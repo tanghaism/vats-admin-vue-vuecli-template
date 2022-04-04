@@ -10,7 +10,7 @@
     @click="emit('handleMenuToggle')"
   />
   <div id="vats-header" class="vats-flex vats-flex-1" />
-  <div class="vats-hover-dropdown" v-if="userInfo">
+  <div class="vats-hover-dropdown" v-if="userInfo" @click="emit('handleShowSetting')">
     <a-avatar
       shape="circle"
       size="small"
@@ -21,7 +21,7 @@
     </a-avatar>
     <span v-if="userInfo?.nickname" style="padding-left: 6px">{{ userInfo.nickname }}</span>
   </div>
-  <div class="vats-hover-dropdown vats-flex" v-else>
+  <div class="vats-hover-dropdown vats-flex" @click="emit('handleShowSetting')" v-else>
     <SettingOutlined style="font-size: 16px" />
   </div>
 </template>
@@ -48,7 +48,7 @@ const props = defineProps<IProps>();
 
 const { collapsed, userInfo } = toRefs(props);
 
-const emit = defineEmits(['handleMenuToggle']);
+const emit = defineEmits(['handleMenuToggle', 'handleShowSetting']);
 </script>
 
 <style lang="scss">

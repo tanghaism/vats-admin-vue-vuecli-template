@@ -1,18 +1,7 @@
 <template>
-  <div>
-    <a-select :value="rootSetting.lang" placeholder="请选择语言" @change="rootSetting.setLang">
-      <a-select-option
-        v-for="item in LANG_OPTION"
-        :key="item.lang"
-        :value="item.lang"
-        :disabled="item.disabled"
-      >
-        <span role="img" aria-label="China">{{ item.flag }}</span>
-        &nbsp;&nbsp;{{ item.name }}
-      </a-select-option>
-    </a-select>
-    {{ $t('common.test') }}
-  </div>
+  <vats-page :hasPermission="true">
+    <a-card> 12321 </a-card>
+  </vats-page>
 </template>
 
 <script lang="ts">
@@ -23,11 +12,6 @@ export default defineComponent({
 });
 </script>
 
-<script lang="ts" setup>
-import { useRoot } from '@/store/root';
-import { LANG_OPTION } from '@/constants/options';
-
-const rootSetting = useRoot();
-</script>
+<script lang="ts" setup></script>
 
 <style scoped lang="scss"></style>
