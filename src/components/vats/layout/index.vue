@@ -63,7 +63,7 @@
       <a-layout-content>
         <router-view v-slot="{ Component }">
           <transition name="slid-up" mode="out-in">
-            <keep-alive :include="settingProvider.cached">
+            <keep-alive :include="cached">
               <component
                 :is="Component"
                 :key="(Component || {}).name"
@@ -106,6 +106,7 @@ import {
   onBeforeUnmount,
   computed,
   inject,
+  watch,
 } from 'vue';
 import { useRoute } from 'vue-router';
 import VatsSider from './sider.vue';
@@ -149,6 +150,8 @@ const siderWidth = computed(() => (layoutState.collapsed ? '80px' : '200px'));
 
 const drawerSiderVisible = computed(() => !layoutState.collapsed && layoutState.isMobile);
 
+const cached = computed(() => (settingProvider.tabVisible ? settingProvider.cached : []));
+
 const copyRightYear = computed(() => {
   let year = new Date().getFullYear();
   if (!props.startYear) return '';
@@ -161,6 +164,20 @@ const copyRightYear = computed(() => {
 const handleRefreshCache = async (refresh = false) => {
   return resetCached(settingProvider, route, refresh);
 };
+
+const handleAddCached = () => {
+  if (route.meta.cached !== false && !settingProvider.cached.includes(route.name as string)) {
+    settingProvider.cached = [...settingProvider.cached, route.name as string];
+  }
+};
+
+handleAddCached();
+watch(
+  () => route.name,
+  name => {
+    handleAddCached();
+  },
+);
 
 // 监听页面resize事件
 const onResize = () =>

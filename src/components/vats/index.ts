@@ -9,6 +9,8 @@ import VatsLayout from './layout/index.vue';
 import VatsProvider from './provider/index.vue';
 import VatsSelect from './select/index.vue';
 import VatsPage from './page/index.vue';
+import VatsTable from './table/index.vue';
+import VatsDrawer from './drawer/index.vue';
 
 import { isMobile } from './utils/isMobile';
 import { debounced } from './utils/debounced';
@@ -21,9 +23,11 @@ export default {
     });
 
     // 组件挂载
-    [VatsLoading, VatsProvider, VatsLayout, VatsSelect, VatsPage].forEach(component => {
-      app.component(component.name, component);
-    });
+    [VatsLoading, VatsProvider, VatsLayout, VatsSelect, VatsPage, VatsTable, VatsDrawer].forEach(
+      component => {
+        app.component(component.name, component);
+      },
+    );
   },
 };
 
@@ -34,6 +38,8 @@ export {
   VatsProvider,
   VatsPage,
   VatsSelect,
+  VatsTable,
+  VatsDrawer,
   isMobile,
   debounced,
 };

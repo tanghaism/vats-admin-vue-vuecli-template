@@ -39,7 +39,15 @@ export default defineComponent({
 </script>
 
 <script setup lang="ts">
-import { inject, defineProps, computed, toRefs } from 'vue';
+import {
+  inject,
+  defineProps,
+  computed,
+  toRefs,
+  getCurrentInstance,
+  ComponentInternalInstance,
+  defineEmits,
+} from 'vue';
 import { useRoute, RouteLocationNormalizedLoaded, RouteLocationMatched } from 'vue-router';
 
 interface BreadcrumbRoute {
@@ -59,6 +67,10 @@ interface IProps {
 
 const props = defineProps<IProps>();
 
+const emit = defineEmits(['init']);
+
+const { appContext } = getCurrentInstance() as ComponentInternalInstance;
+
 const { showPageHeader, breadcrumb, title, desc, hasPermission } = toRefs(props);
 
 const route: RouteLocationNormalizedLoaded = useRoute();
@@ -72,6 +84,14 @@ const pageTitle = computed((): string => {
 const pageDesc = computed((): string => {
   return desc?.value || ((route.meta.desc && route.meta.desc) as string);
 });
+
+// 是否可以执行初始化渲染请求数据
+if (
+  hasPermission?.value ||
+  appContext.config.globalProperties.$checkPermissions(route.meta.permission)
+) {
+  emit('init');
+}
 
 const breadcrumbRoutes = computed(() => {
   return (

@@ -1,5 +1,5 @@
 <template>
-  <vats-page :hasPermission="true">
+  <vats-page :has-permission="true" @init="handlePass">
     <a-card> 12321 </a-card>
   </vats-page>
 </template>
@@ -12,6 +12,15 @@ export default defineComponent({
 });
 </script>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { onActivated } from 'vue';
+const handlePass = () => {
+  console.log('触发了');
+};
+
+onActivated(() => {
+  console.log('dsadas');
+});
+</script>
 
 <style scoped lang="scss"></style>
