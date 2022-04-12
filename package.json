@@ -12,13 +12,15 @@
     "ant-design-vue": "^3.1.0-rc.4",
     "axios": "^0.26.1",
     "core-js": "^3.8.3",
+    "cropperjs": "^1.5.12",
     "dayjs": "^1.11.0",
     "pinia": "^2.0.12",
     "register-service-worker": "^1.7.2",
     "vue": "^3.2.13",
     "vue-i18n": "^9.1.9",
     "vue-router": "^4.0.3",
-    "vue-watermarker": "^0.0.5"
+    "vue-watermarker": "^0.0.5",
+    "vats": "https://github.com/tanghaism/vats.git"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.4.0",

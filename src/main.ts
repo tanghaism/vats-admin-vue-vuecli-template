@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import Antd, { message, Modal } from 'ant-design-vue';
 import { createPinia } from 'pinia';
-import Vats from '@/components/vats';
+import Vats from 'vats';
 import App from './App.vue';
 import { initI18n } from '@/utils/i18n';
 import './registerServiceWorker';
@@ -9,6 +9,7 @@ import router from './router';
 
 import 'ant-design-vue/dist/antd.min.css';
 import '@/assets/scss/index.scss';
+import 'vats/dist/style.css';
 
 window.$message = message;
 window.$modal = Modal;
