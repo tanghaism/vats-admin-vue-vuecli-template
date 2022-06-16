@@ -102,7 +102,13 @@ module.exports = defineConfig({
       },
     },
     externals: IS_PROD ? externals : {},
-    plugins: [IS_PROD && new webpack.IgnorePlugin(/^\.\/locale$/, /dayjs$/)].filter(Boolean),
+    plugins: [
+      IS_PROD &&
+        new webpack.IgnorePlugin({
+          contextRegExp: /^\.\/locale$/,
+          resourceRegExp: /dayjs$/,
+        }),
+    ].filter(Boolean),
   },
   chainWebpack(config) {
     config.optimization.delete('splitChunks');

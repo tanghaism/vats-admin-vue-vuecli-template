@@ -2172,6 +2172,29 @@ ant-design-vue@^3.1.0-rc.4:
     vue-types "^3.0.0"
     warning "^4.0.0"
 
+ant-design-vue@^3.1.1:
+  version "3.2.7"
+  resolved "https://registry.npmjs.org/ant-design-vue/-/ant-design-vue-3.2.7.tgz#e1623e1dd6ecc3bc7e10e0b0178a72e83a8aa5d2"
+  integrity sha512-+29ATxnVUgvIYxz2BAYwkEr9oBYmdzqMKijgq9woV+lqjhYaRkcTZl6h8VDU/iiVstcH3yYdKJbrqGJjl6ktSg==
+  dependencies:
+    "@ant-design/colors" "^6.0.0"
+    "@ant-design/icons-vue" "^6.1.0"
+    "@babel/runtime" "^7.10.5"
+    "@ctrl/tinycolor" "^3.4.0"
+    "@simonwep/pickr" "~1.8.0"
+    array-tree-filter "^2.1.0"
+    async-validator "^4.0.0"
+    dayjs "^1.10.5"
+    dom-align "^1.12.1"
+    dom-scroll-into-view "^2.0.0"
+    lodash "^4.17.21"
+    lodash-es "^4.17.15"
+    resize-observer-polyfill "^1.5.1"
+    scroll-into-view-if-needed "^2.2.25"
+    shallow-equal "^1.0.0"
+    vue-types "^3.0.0"
+    warning "^4.0.0"
+
 any-promise@^1.0.0:
   version "1.3.0"
   resolved "https://registry.npmjs.org/any-promise/-/any-promise-1.3.0.tgz"
@@ -6718,6 +6741,13 @@ vary@~1.1.2:
   resolved "https://registry.npmjs.org/vary/-/vary-1.1.2.tgz"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
 
+"vats@ssh://git@github.com:tanghaism/vats.git#master":
+  version "0.0.1"
+  resolved "ssh://git@github.com:tanghaism/vats.git#cbea24d2de91df0dda01227cd7313c39ef8ae466"
+  dependencies:
+    ant-design-vue "^3.1.1"
+    cropperjs "^1.5.12"
+
 vue-demi@*:
   version "0.12.4"
   resolved "https://registry.npmjs.org/vue-demi/-/vue-demi-0.12.4.tgz"
@@ -6760,10 +6790,10 @@ vue-loader@^17.0.0:
     hash-sum "^2.0.0"
     loader-utils "^2.0.0"
 
-vue-router@^4.0.3:
-  version "4.0.14"
-  resolved "https://registry.npmjs.org/vue-router/-/vue-router-4.0.14.tgz"
-  integrity sha512-wAO6zF9zxA3u+7AkMPqw9LjoUCjSxfFvINQj3E/DceTt6uEz1XZLraDhdg2EYmvVwTBSGlLYsUw8bDmx0754Mw==
+vue-router@^4.0.14:
+  version "4.0.16"
+  resolved "https://registry.npmjs.org/vue-router/-/vue-router-4.0.16.tgz#9477beeeef36e80e04d041a1738801a55e6e862e"
+  integrity sha512-JcO7cb8QJLBWE+DfxGUL3xUDOae/8nhM1KVdnudadTAORbuxIC/xAydC5Zr/VLHUDQi1ppuTF5/rjBGzgzrJNA==
   dependencies:
     "@vue/devtools-api" "^6.0.0"
 
