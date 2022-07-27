@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --modern",
-    "lint": "vue-cli-service lint"
+    "lint": "Diff=$(git diff --cached --diff-filter=d --name-only -- '*.ts' '*.tsx' '*.js' '*.vue') && eslint --fix $Diff --ext .js,.ts,.vue.tsx"
   },
   "dependencies": {
     "@ant-design/icons-vue": "^6.1.0",
@@ -16,11 +16,11 @@
     "dayjs": "^1.11.0",
     "pinia": "^2.0.12",
     "register-service-worker": "^1.7.2",
+    "vats": "ssh://git@github.com:tanghaism/vats.git#master",
     "vue": "^3.2.13",
     "vue-i18n": "^9.1.9",
     "vue-router": "^4.0.14",
-    "vue-watermarker": "^0.0.5",
-    "vats": "ssh://git@github.com:tanghaism/vats.git#master"
+    "vue-watermarker": "^0.0.5"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.4.0",
@@ -37,10 +37,18 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^8.0.3",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
     "prettier": "^2.4.1",
     "sass": "^1.32.7",
     "sass-loader": "^12.0.0",
     "typescript": "~4.5.5",
     "webpack": "^5.70.0"
+  },
+  "lint-staged": {
+    "*.{ts,js,tsx,vue}": [
+      "npm run lint",
+      "prettier --write"
+    ]
   }
 }

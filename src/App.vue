@@ -37,15 +37,6 @@ const watermarkTexts = ref<string[]>([
   'Auth: TangHai',
   new Date().toLocaleString(),
 ]);
-
-const setWatermarkTexts = () => {
-  watermarkTexts.value = [...watermarkTexts.value.slice(0, 2), new Date().toLocaleString()];
-  setTimeout(() => {
-    setWatermarkTexts();
-  }, 5000);
-};
-
-setWatermarkTexts();
 </script>
 
 <style lang="scss"></style>
